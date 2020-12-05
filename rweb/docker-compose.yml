@@ -8,7 +8,7 @@ services:
       - '80:80'
       - '443:443'
     networks:
-      - sp-net
+      - dest-net
     volumes:
       - ./config/apache/httpd.conf:/opt/bitnami/apache/conf/httpd.conf:ro
       - ./config/apache/r-ssl.conf:/vhosts/my_vhost.conf:ro
@@ -19,13 +19,15 @@ services:
 
   shiny:
     image: 'rocker/shiny'
+    volumes:
+      - /srv/shinyapps:/srv/shiny-server
     networks:
-      - sp-net
+      - dest-net
 
   rstudio:
     image: 'rocker/rstudio'
     networks:
-      - sp-net
+      - dest-net
     environment:
       - PASSWORD=rinproduction
       - DISABLE_AUTH=false
@@ -33,6 +35,6 @@ services:
 
   
 networks:
-  sp-net:
-    name: rweb_sp-net
+  dest-net:
+    name: rweb_dest-net
   
